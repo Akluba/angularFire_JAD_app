@@ -1,0 +1,24 @@
+{"users": [
+	{
+		"user": 1,
+		"selections": [
+			{"number": 2, "selection":[32,50,70,85], "comment": "This is a second example comment from user1"},
+			{"number": 1, "selection":[12,50,100,75], "comment": "This is an example comment from user1"}
+		]
+	},
+	{
+		"user": 2,
+		"selections": [
+			{"number": 1, "selection":[55,75,100,95], "comment": "This is an example comment from user2"}
+		]
+	},
+	{
+		"user": 3,
+		"selections": [
+			{"number": 1, "selection":[95,300,400,350], "comment": "This is an example comment from user3"}
+		]
+	}
+]}
+
+
+
