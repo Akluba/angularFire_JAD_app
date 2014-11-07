@@ -1,0 +1,22 @@
+<div id ="parent">	
+	<span>
+		<div id="user_info" ng-show="loginObj.user">
+			{{loginObj.user.email}} | <a href="#" ng-click="loginObj.$logout()"> Logout</a>
+		</div>
+	</span>
+	<aside>
+		<div id="user_tabs">
+			<ul>
+				<li class="current">User 1</li>
+				<li class="not_current">User 2</li>
+				<li class="not_current">User 3</li>
+			</ul>
+		</div>
+		<div style="clear:both;" id="comments"></div>
+	</aside>
+	
+	<div id="canvas_area">
+		<canvas id="canvas" ng-mousedown="mouseDown($event)" ng-mouseup="mouseUp($event)"></canvas>
+		<canvas id="canvasImg"></canvas>
+	</div>
+</div>
