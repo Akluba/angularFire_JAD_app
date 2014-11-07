@@ -35,155 +35,51 @@ jad_app.controller('DashCtrl',["$scope", "$rootScope", "$firebase", "$location",
 		############################ FIND CURRENT USER ##########################
 		###################################################################### */
 		$rootScope.loginObj.$getCurrentUser().then(function(user){
-			console.log(user.uid);
-			$scope.currentUserNum = user.id;
-			
-			var currentUserRef = new Firebase('https://jadapp.firebaseio.com/users/user'+$scope.currentUserNum+"/selections");
+			//setting user.uid from $getCurrentUser() results to currentUserNum variable
+			$scope.currentUserNum = user.uid;
+			//reference for adding new selections object to currentUserNum
+			var currentUserRef = new Firebase('https://jadapp.firebaseio.com/users/'+$scope.currentUserNum+'/selections');
 			$scope.currentUser = $firebase(currentUserRef).$asArray();
 			$scope.currentUser.$loaded().then(function(){
 				console.log("-------------------CURRENT USER-------------------");
-				console.log("current user:"+$scope.currentUserNum);
+				console.log("current user: "+$scope.currentUserNum);
 			}).then(function(){
-				canvasLoad();
-			}).then(function(){
-				loadUsers();
-			})		
-		})
+				var usersRef = new Firebase('https://jadapp.firebaseio.com/users');
+				$scope.usersArray = $firebase(usersRef).$asArray();
+				$scope.usersArray.$loaded().then(function(){
+					drawCanvasRects();
+					$scope.usersArray.$watch(function(event){
+						console.log('-------------------'+event.event+' by '+event.key+'-------------------');
+						drawCanvasRects();
+					});//watch for changes to user object
+				});//end usersArray loaded
+			});//end then function
+		});//end getCurrentUser function
 		
 		
 		/* ######################################################################
-		############################ LOAD USERS #################################
+		############################ DRAW RECT TO CANVAS ########################
 		###################################################################### */
-		function loadUsers(){
-			var usersRef = new Firebase('https://jadapp.firebaseio.com/users');
-			$scope.usersArray = $firebase(usersRef).$asArray();
-			$scope.usersArray.$loaded().then(function(){
-				console.log($scope.usersArray[$scope.currentUserNum-3]);
-				
-				
-				
-				
-				
-				canvasChange();
-			})
-		}
-		
-		/* ######################################################################
-		############################ DRAW TO CANVAS ONLOAD ######################
-		###################################################################### */
-		function canvasLoad(){	
-			console.log("-------------------EXISTING SELECTIONS-------------------")
-					
-			/* ############################### USER 1 ####################################### */
-			var user1Ref = new Firebase('https://jadapp.firebaseio.com/users/user1/selections');
-			$scope.user1Array = $firebase(user1Ref).$asArray();
-			$scope.user1Array.$loaded().then(function(){
-				//console.log user 1's selections onload
-				console.log("user1's selections" ,$scope.user1Array);
-				//draw user 1's canvas rects onload
-				for(i=0; i<$scope.user1Array.length; i++){
+		function drawCanvasRects(){
+			//clear canvas to redraw rects + new rect
+			ctx.clearRect(0, 0, canvas.width, canvas.height);	
+			//looping through all user objects			
+			angular.forEach($scope.usersArray, function(users, key) {
+				console.log("-------------------user " + users.$id + "'s selections-------------------");
+				$scope.color = users['color'];
+				//looping through all user.selections objects
+				angular.forEach(users['selections'], function(selection,key){
+					//print all user.selections objects to console
+					console.log(selection);
+					//draw all user.selections.rect to cavas
 					ctx.beginPath();
-					ctx.rect($scope.user1Array[i].rect[0],$scope.user1Array[i].rect[1],$scope.user1Array[i].rect[2],$scope.user1Array[i].rect[3]);
-					ctx.fillStyle = 'rgba(255,0,0,0.5)';
+					ctx.rect(selection.rect[0],selection.rect[1],selection.rect[2],selection.rect[3]);
+					ctx.fillStyle = $scope.color;
 					ctx.fill();
-				}
-				//watch for individual changes by user 1
-				watchUser1();
-			})
-			
-			/* ############################### USER 2 ####################################### */
-			var user2Ref = new Firebase('https://jadapp.firebaseio.com/users/user2/selections');
-			$scope.user2Array = $firebase(user2Ref).$asArray();
-			$scope.user2Array.$loaded().then(function(){
-				//console.log user 2's selections onload
-				console.log("user2's selections" ,$scope.user2Array);
-				//draw user 2's canvas rects onload
-				for(i=0; i<$scope.user2Array.length; i++){
-					ctx.beginPath();
-					ctx.rect($scope.user2Array[i].rect[0],$scope.user2Array[i].rect[1],$scope.user2Array[i].rect[2],$scope.user2Array[i].rect[3]);
-					ctx.fillStyle = 'rgba(0,255,0,0.5)';
-					ctx.fill();
-				}
-				//watch for individual changes by user 2
-				watchUser2();
-			})
-			
-			/* ############################### USER 3 ####################################### */
-			var user3Ref = new Firebase('https://jadapp.firebaseio.com/users/user3/selections');
-			$scope.user3Array = $firebase(user3Ref).$asArray();
-			$scope.user3Array.$loaded().then(function(){
-				//console.log user 3's selections onload
-				console.log("user3's selections" ,$scope.user3Array);
-				//draw user 3's canvas rects onload
-				for(i=0; i<$scope.user3Array.length; i++){
-					ctx.beginPath();
-					ctx.rect($scope.user3Array[i].rect[0],$scope.user3Array[i].rect[1],$scope.user3Array[i].rect[2],$scope.user3Array[i].rect[3]);
-					ctx.fillStyle = 'rgba(0,0,255,0.5)';
-					ctx.fill();
-				}
-				//watch for individual changes by user 3
-				watchUser3();
-			})
-		}
+				});//end forEach user selections
+			});//end forEach users	
+		}//end drawCanvasRects function
 		
-		
-		
-		/* ######################################################################
-		############################ WATCH FOR CHANGE ###########################
-		###################################################################### */
-		function watchUser1(){
-			$scope.user1Array.$watch(function(event){
-				console.log("-------------------USER ACTIVITY-------------------");
-				console.log("user1:",event.event,event.key);
-			})
-		}
-		
-		function watchUser2(){
-			$scope.user2Array.$watch(function(event){
-				console.log("-------------------USER ACTIVITY-------------------");
-				console.log("user2:",event.event,event.key);
-			})
-		}
-		
-		function watchUser3(){
-			$scope.user3Array.$watch(function(event){
-				console.log("-------------------USER ACTIVITY-------------------");
-				console.log("user3:",event.event,event.key);
-			})
-		}
-		
-		
-		/* ######################################################################
-		############################ DRAW TO CANVAS ON CHANGE ###################
-		###################################################################### */
-		function canvasChange(){
-			$scope.usersArray.$watch(function(){
-				
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				
-				for(i=0; i<$scope.user1Array.length; i++){
-					ctx.beginPath();
-					ctx.rect($scope.user1Array[i].rect[0],$scope.user1Array[i].rect[1],$scope.user1Array[i].rect[2],$scope.user1Array[i].rect[3]);
-					ctx.fillStyle = 'rgba(255,0,0,0.5)';
-					ctx.fill();
-				}
-				
-				for(i=0; i<$scope.user2Array.length; i++){
-					ctx.beginPath();
-					ctx.rect($scope.user2Array[i].rect[0],$scope.user2Array[i].rect[1],$scope.user2Array[i].rect[2],$scope.user2Array[i].rect[3]);
-					ctx.fillStyle = 'rgba(0,255,0,0.5)';
-					ctx.fill();
-				}
-				
-				for(i=0; i<$scope.user3Array.length; i++){
-					ctx.beginPath();
-					ctx.rect($scope.user3Array[i].rect[0],$scope.user3Array[i].rect[1],$scope.user3Array[i].rect[2],$scope.user3Array[i].rect[3]);
-					ctx.fillStyle = 'rgba(0,0,255,0.5)';
-					ctx.fill();
-				}
-			})
-		}
-				
 	
 		/* ######################################################################
 		############################ MOUSE DOWN FUNCTION ########################
@@ -218,12 +114,11 @@ jad_app.controller('DashCtrl',["$scope", "$rootScope", "$firebase", "$location",
 			point4 = mouseY-startY,
 			comment = "Please type your comment here..";
 			
-			
 			$scope.currentUser.$add({"number": selectionNum, "rect":[point1,point2,point3,point4], "comment": comment});
 			
 			canvas.style.cursor="default";
 		}
 		
 	
-	}
-]);
+	}//end of main function
+]);//end of controller
