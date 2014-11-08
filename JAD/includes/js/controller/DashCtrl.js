@@ -49,7 +49,7 @@ jad_app.controller('DashCtrl',["$scope", "$rootScope", "$firebase", "$location",
 				$scope.usersArray.$loaded().then(function(){
 					drawCanvasRects();
 					$scope.usersArray.$watch(function(event){
-						console.log('-------------------'+event.event+' by '+event.key+'-------------------');
+						console.log('****************'+event.event+' by '+event.key+'****************');
 						drawCanvasRects();
 					});//watch for changes to user object
 				});//end usersArray loaded
@@ -71,6 +71,8 @@ jad_app.controller('DashCtrl',["$scope", "$rootScope", "$firebase", "$location",
 				angular.forEach(users['selections'], function(selection,key){
 					//print all user.selections objects to console
 					console.log(selection);
+					//USE THIS FOR NG_REPEAT TO PRINT COMMENTS???????????????????
+					$scope.userSelections = selection;
 					//draw all user.selections.rect to cavas
 					ctx.beginPath();
 					ctx.rect(selection.rect[0],selection.rect[1],selection.rect[2],selection.rect[3]);

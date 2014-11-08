@@ -12,7 +12,16 @@
 				<li class="not_current">User 3</li>
 			</ul>
 		</div>
-		<div style="clear:both;" id="comments"></div>
+		
+		<div style="clear:both;" id="comments">
+			
+			<div class='comment' ng-repeat="user in userSelections">
+				<div class='comment_number'><p>{{user.number}}</p></div>
+				<div class='comment_box'><textarea placeholder='{{user.comment}}'></textarea></div>
+			</div>
+			
+			
+		</div>
 	</aside>
 	
 	<div id="canvas_area">
