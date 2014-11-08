@@ -61,6 +61,9 @@ jad_app.controller('DashCtrl',["$scope", "$rootScope", "$firebase", "$location",
 		############################ DRAW RECT TO CANVAS ########################
 		###################################################################### */
 		function drawCanvasRects(){
+			
+			$scope.userSelections = []
+		
 			//clear canvas to redraw rects + new rect
 			ctx.clearRect(0, 0, canvas.width, canvas.height);	
 			//looping through all user objects			
@@ -72,7 +75,7 @@ jad_app.controller('DashCtrl',["$scope", "$rootScope", "$firebase", "$location",
 					//print all user.selections objects to console
 					console.log(selection);
 					//USE THIS FOR NG_REPEAT TO PRINT COMMENTS???????????????????
-					$scope.userSelections = selection;
+					$scope.userSelections.push(selection);
 					//draw all user.selections.rect to cavas
 					ctx.beginPath();
 					ctx.rect(selection.rect[0],selection.rect[1],selection.rect[2],selection.rect[3]);
