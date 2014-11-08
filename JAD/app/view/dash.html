@@ -7,17 +7,20 @@
 	<aside>
 		<div id="user_tabs">
 			<ul>
-				<li class="current">User 1</li>
-				<li class="not_current">User 2</li>
-				<li class="not_current">User 3</li>
+				<li class="current" ng-repeat="user in usersArray" ng-click="" >{{user.$id}}</li>
 			</ul>
+		</div>
+		<div>
+		<button ng-click="count = count + 1" ng-init="count=0">
+			count: {{count}}
+		</button>
 		</div>
 		
 		<div style="clear:both;" id="comments">
 			
-			<div class='comment' ng-repeat="user in userSelections">
-				<div class='comment_number'><p>{{user.number}}</p></div>
-				<div class='comment_box'><textarea placeholder=''>{{user.comment}}</textarea></div>
+			<div class='comment' ng-repeat="selection in userArray">
+				<div class='comment_number'><p>{{selection.number}}</p></div>
+				<div class='comment_box'><textarea placeholder=''>{{selection.comment}}</textarea></div>
 			</div>
 			
 			

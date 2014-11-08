@@ -39,7 +39,7 @@ aside{
 	position:absolute;
     width: 401px;
     left:0px;
-    top:30px;
+    top:42px;
     background-color: #dde5ec;
     bottom:0px;
     overflow: scroll;
@@ -51,28 +51,29 @@ span{
 	position:absolute;
 	top: 0;
     width: 401px;
-    height: 30px;
+    height: 42px;
     background-color: #C6D1D6;
-    line-height: 30px;
+    line-height: 42px;
     -webkit-box-shadow: 1px 0 2px #A0A9B3;
     -moz-box-shadow: 1px 0 2px #A0A9B3;
     box-shadow: 1px 0 2px #A0A9B3;
 }
 #user_info{
-	color: white;
-	
+	color: #9099A3;
 	float: right;
 	margin: 0;
+	margin-right: 12px;
 }
 #user_info a{
 	color: #617785;
 	text-decoration: none;
+	font-variant: small-caps;
 }
 aside ul{
 	margin: 0;
 	padding: 0;
 	position: fixed;
-	top: 30px;
+	top: 42px;
 	left: 0;
 }
 aside ul li{
