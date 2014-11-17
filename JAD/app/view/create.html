@@ -1,0 +1,16 @@
+<div id="login_container">
+	<div id="login_box">
+		<div class="shadow" id="login_top">
+			<h1>Create User</h1>
+		</div>
+		<div class="shadow" id="login_form">
+			<form ng-submit="create_user()">
+				<input class="login_box_text" type="email" placeholder="Email Address" ng-model="create.email" required />
+				<input class="login_box_text" type="password" placeholder="Password" ng-model="create.password" required />
+				<button type="submit">Submit</button>
+			</form>
+			<p class="error_message">{{error}}</p>
+		</div>
+		<a href="/">Back</a>
+	</div>
+</div>

@@ -1,0 +1,34 @@
+<div id="login_container">
+	<div id="login_box">
+		<div class="shadow" id="login_top">
+			<h1>User Information</h1>
+		</div>
+		<div class="shadow" id="login_form">
+			<form ng-submit="save_user()">
+				<label>Enter a user name:</label><br />
+				<input class="login_box_text" type="text" placeholder="Name" ng-model="user.name" />
+				
+				<label>Choose a selector color:</label><br />
+				<div style="background-color:rgba(255,0,0,.5);" class="color_block"></div>
+				<div style="background-color:rgba(0,0,255,.5);" class="color_block"></div>
+				<div style="background-color:rgba(255,0,170,.5);" class="color_block"></div>
+				<div style="background-color:rgba(0,255,0,.5);" class="color_block"></div>
+				<div style="background-color:rgba(255,150,0,.5);" class="color_block"></div>
+				<div style="background-color:rgba(157,0,255,.5);" class="color_block"></div>
+				<br />
+				
+				<div id="radio_buttons">
+					<input type="radio" ng-model="user.color" value="rgba(255,0,0,.5)">
+					<input type="radio" ng-model="user.color" value="rgba(0,0,255,.5)">
+					<input type="radio" ng-model="user.color" value="rgba(255,0,170,.5)">
+					<input type="radio" ng-model="user.color" value="rgba(0,255,0,.5)">
+					<input type="radio" ng-model="user.color" value="rgba(255,150,0,.5)">
+					<input type="radio" ng-model="user.color" value="rgba(157,0,255,.5)">
+				</div>
+				
+				<button type="submit">Save</button>
+			</form>
+		</div>
+		<a href="/#/dashboard" ng-show="existing">Back</a>
+	</div>
+</div>

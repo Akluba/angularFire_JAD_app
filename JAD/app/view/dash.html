@@ -1,32 +1,48 @@
 <div id ="parent">	
-	<span>
-		<div id="user_info" ng-show="loginObj.user">
-			{{loginObj.user.email}} | <a href="#" ng-click="loginObj.$logout()"> Logout</a>
-		</div>
-	</span>
 	<aside>
+		<!-- User options -->
+		<span>
+			<div id="user_info" ng-show="loginObj.user">
+				<a href="/#/user_info">{{loginObj.user.email}}</a> | <a href="#" ng-click="loginObj.$logout()">Logout</a>
+			</div>
+		</span>
+		<!-- Users list -->
 		<div id="user_tabs">
 			<ul>
-				<li class="current" ng-repeat="user in usersArray" ng-click="" >{{user.$id}}</li>
+				<li ng-repeat="item in usersArray | orderBy: 'name'" 
+				ng-click="$parent.currentUserNum = usersArray.$keyAt(item)" 
+				ng-class="{current:$parent.currentUserNum == usersArray.$keyAt(item)}">{{item.name}}
+				</li>
 			</ul>
 		</div>
-		<div>
-		<button ng-click="count = count + 1" ng-init="count=0">
-			count: {{count}}
-		</button>
-		</div>
-		
-		<div style="clear:both;" id="comments">
-			
-			<div class='comment' ng-repeat="selection in userArray">
-				<div class='comment_number'><p>{{selection.number}}</p></div>
-				<div class='comment_box'><textarea placeholder=''>{{selection.comment}}</textarea></div>
+		<!-- Comments section of dashboard -->
+		<div style="clear:both;" id="comment_area">
+			<div class='comment' ng-repeat="item in array = (usersArray[usersArray.$indexFor(currentUserNum)].selections | toArray) | orderBy:$index:true">
+				<div class="comment_number" 
+				ng-style="{'background-color':'{{usersArray[usersArray.$indexFor(currentUserNum)].color}}'}"><p>{{array.length - $index}}</p></div>
+				<!-- Static state comment -->
+				<div class='comment_box' ng-mouseover="show_option = true" ng-mouseout="show_option = false" ng-show="currentUserNum == loginObj.user.uid">	
+					<!-- Comment edit/remove options -->
+					<div class="selection_option" ng-show="show_option && !edit_state">
+						<div id="option_container">
+							<button ng-click="edit_state = true; show_option = false">Edit</button>
+							<button ng-click="remove_selection(array.length - $index -1)">Remove</button>	
+						</div>
+					</div>
+					<!-- Static state comment -->
+					<div id="static_comment"ng-hide="edit_state"><p>{{item.comment}}</p></div>
+					<!-- Edit state comment -->
+					<div id="textarea_comment" ng-show="edit_state">
+						<textarea ng-model="item.comment" msd-elastic></textarea>
+						<button ng-click="update_selection(array.length - $index -1 , item.comment); edit_state = false">Save Comment</button>
+					</div>	
+				</div>
+				<!-- ?????????? -->
+				<div class='comment_box' ng-hide="currentUserNum == loginObj.user.uid"><p>{{item.comment}}</p></div>
 			</div>
-			
-			
 		</div>
 	</aside>
-	
+	<!-- Canvas section of dashboard -->
 	<div id="canvas_area">
 		<canvas id="canvas" ng-mousedown="mouseDown($event)" ng-mouseup="mouseUp($event)"></canvas>
 		<canvas id="canvasImg"></canvas>
